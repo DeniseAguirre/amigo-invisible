@@ -7,6 +7,7 @@
 export * from "./alert";
 export * from "./icons";
 export * from "./helpers";
+export * from "./validations";
 
 // Re-export with cleaner names
 export {
@@ -55,3 +56,14 @@ export {
   sleep,
   slugify,
 } from "./helpers";
+
+export {
+  loginSchema,
+  registerSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  type LoginFormValues,
+  type RegisterFormValues,
+  type ForgotPasswordFormValues,
+  type ResetPasswordFormValues,
+} from "./validations";
