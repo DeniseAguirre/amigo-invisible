@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import { colors, typography } from '../../../theme';
-import { getInitials } from '../../../utils';
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import FastImage from "react-native-fast-image";
+import { colors, typography } from "../../../theme";
+import { getInitials } from "../../../utils";
 
 /**
  * Avatar sizes
  */
-export type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
+export type AvatarSize = "sm" | "md" | "lg" | "xl";
 
 /**
  * Avatar component props
@@ -33,139 +33,141 @@ export interface AvatarProps {
  * Reusable Avatar component with image support and initials fallback
  * Uses react-native-fast-image for better performance
  */
-export const Avatar: React.FC<AvatarProps> = React.memo(({
-  uri,
-  size = 'md',
-  fallbackText,
-  onPress,
-  backgroundColor,
-  textColor,
-  testID,
-}) => {
-  const [imageError, setImageError] = useState(false);
-  const [imageLoading, setImageLoading] = useState(true);
+export const Avatar: React.FC<AvatarProps> = React.memo(
+  ({
+    uri,
+    size = "md",
+    fallbackText,
+    onPress,
+    backgroundColor,
+    textColor,
+    testID,
+  }) => {
+    const [imageError, setImageError] = useState(false);
+    const [imageLoading, setImageLoading] = useState(true);
 
-  // Get size dimensions
-  const getSizeDimensions = () => {
-    const sizes = {
-      sm: 32,
-      md: 48,
-      lg: 64,
-      xl: 96,
+    // Get size dimensions
+    const getSizeDimensions = () => {
+      const sizes = {
+        sm: 32,
+        md: 48,
+        lg: 64,
+        xl: 96,
+      };
+      return sizes[size];
     };
-    return sizes[size];
-  };
 
-  // Get text size for initials
-  const getTextSize = () => {
-    const textSizes = {
-      sm: 12,
-      md: 16,
-      lg: 20,
-      xl: 28,
+    // Get text size for initials
+    const getTextSize = () => {
+      const textSizes = {
+        sm: 12,
+        md: 16,
+        lg: 20,
+        xl: 28,
+      };
+      return textSizes[size];
     };
-    return textSizes[size];
-  };
 
-  // Get container styles
-  const getContainerStyles = () => {
-    const dimension = getSizeDimensions();
-    
-    return {
-      width: dimension,
-      height: dimension,
-      borderRadius: dimension / 2,
-      backgroundColor: backgroundColor || colors.PRIMARY,
-      alignItems: 'center' as const,
-      justifyContent: 'center' as const,
-      overflow: 'hidden' as const,
+    // Get container styles
+    const getContainerStyles = () => {
+      const dimension = getSizeDimensions();
+
+      return {
+        width: dimension,
+        height: dimension,
+        borderRadius: dimension / 2,
+        backgroundColor: backgroundColor || colors.PRIMARY,
+        alignItems: "center" as const,
+        justifyContent: "center" as const,
+        overflow: "hidden" as const,
+      };
     };
-  };
 
-  // Get image styles
-  const getImageStyles = () => {
-    const dimension = getSizeDimensions();
-    
-    return {
-      width: dimension,
-      height: dimension,
-      borderRadius: dimension / 2,
+    // Get image styles
+    const getImageStyles = () => {
+      const dimension = getSizeDimensions();
+
+      return {
+        width: dimension,
+        height: dimension,
+        borderRadius: dimension / 2,
+      };
     };
-  };
 
-  // Get initials text styles
-  const getInitialsStyles = () => ({
-    fontSize: getTextSize(),
-    fontWeight: typography.buttonLarge.fontWeight,
-    color: textColor || colors.TEXT_INVERSE,
-    textAlign: 'center' as const,
-  });
+    // Get initials text styles
+    const getInitialsStyles = () => ({
+      fontSize: getTextSize(),
+      fontWeight: typography.buttonLarge.fontWeight,
+      color: textColor || colors.TEXT_INVERSE,
+      textAlign: "center" as const,
+    });
 
-  // Handle image load error
-  const handleImageError = () => {
-    setImageError(true);
-    setImageLoading(false);
-  };
+    // Handle image load error
+    const handleImageError = () => {
+      setImageError(true);
+      setImageLoading(false);
+    };
 
-  // Handle image load success
-  const handleImageLoad = () => {
-    setImageError(false);
-    setImageLoading(false);
-  };
+    // Handle image load success
+    const handleImageLoad = () => {
+      setImageError(false);
+      setImageLoading(false);
+    };
 
-  // Generate initials from fallback text
-  const initials = fallbackText ? getInitials(fallbackText, 2) : '?';
+    // Generate initials from fallback text
+    const initials = fallbackText ? getInitials(fallbackText, 2) : "?";
 
-  // Determine if we should show image or initials
-  const shouldShowImage = uri && !imageError && !imageLoading;
-  const shouldShowInitials = !shouldShowImage;
+    // Determine if we should show image or initials
+    const shouldShowImage = uri && !imageError && !imageLoading;
+    const shouldShowInitials = !shouldShowImage;
 
-  // Render avatar content
-  const renderAvatarContent = () => {
-    if (shouldShowImage) {
+    // Render avatar content
+    const renderAvatarContent = () => {
+      if (shouldShowImage) {
+        return (
+          <FastImage
+            source={{ uri }}
+            style={getImageStyles()}
+            onError={handleImageError}
+            onLoad={handleImageLoad}
+            resizeMode={FastImage.resizeMode.cover}
+            testID={`${testID}-image`}
+          />
+        );
+      }
+
+      if (shouldShowInitials) {
+        return (
+          <Text style={getInitialsStyles()} testID={`${testID}-initials`}>
+            {initials}
+          </Text>
+        );
+      }
+
+      return null;
+    };
+
+    // If pressable, wrap in TouchableOpacity
+    if (onPress) {
       return (
-        <FastImage
-          source={{ uri }}
-          style={getImageStyles()}
-          onError={handleImageError}
-          onLoad={handleImageLoad}
-          resizeMode={FastImage.resizeMode.cover}
-          testID={`${testID}-image`}
-        />
+        <TouchableOpacity
+          style={getContainerStyles()}
+          onPress={onPress}
+          activeOpacity={0.8}
+          testID={testID}
+        >
+          {renderAvatarContent()}
+        </TouchableOpacity>
       );
     }
 
-    if (shouldShowInitials) {
-      return (
-        <Text style={getInitialsStyles()} testID={`${testID}-initials`}>
-          {initials}
-        </Text>
-      );
-    }
-
-    return null;
-  };
-
-  // If pressable, wrap in TouchableOpacity
-  if (onPress) {
+    // Otherwise, render as View
     return (
-      <TouchableOpacity
-        style={getContainerStyles()}
-        onPress={onPress}
-        activeOpacity={0.8}
-        testID={testID}
-      >
+      <View style={getContainerStyles()} testID={testID}>
         {renderAvatarContent()}
-      </TouchableOpacity>
+      </View>
     );
   }
+);
 
-  // Otherwise, render as View
-  return (
-    <View style={getContainerStyles()} testID={testID}>
-      {renderAvatarContent()}
-    </View>
-  );
-});
-
-Avatar.displayName = 'Avatar';
+Avatar.displayName = "Avatar";

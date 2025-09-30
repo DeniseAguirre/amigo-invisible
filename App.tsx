@@ -1,46 +1,53 @@
-import React, { useState } from 'react';
-import { ScrollView, View, Text, Alert } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { colors, typography, spacing } from './src/theme';
-import { 
-  Button, 
-  Input, 
-  Avatar, 
-  Card, 
-  Header, 
-  EmptyState 
-} from './src/components/ui';
+import React, { useState } from "react";
+import { ScrollView, View, Text, Alert } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { colors, typography, spacing } from "./src/theme";
+import {
+  Button,
+  Input,
+  Avatar,
+  Card,
+  Header,
+  EmptyState,
+} from "./src/components/ui";
 
 // Validation schema for form example
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('El nombre es requerido'),
-  email: Yup.string().email('Email inválido').required('El email es requerido'),
-  password: Yup.string().min(6, 'Mínimo 6 caracteres').required('La contraseña es requerida'),
+  name: Yup.string().required("El nombre es requerido"),
+  email: Yup.string().email("Email inválido").required("El email es requerido"),
+  password: Yup.string()
+    .min(6, "Mínimo 6 caracteres")
+    .required("La contraseña es requerida"),
 });
 
 export default function App() {
-  const [showEmptyState, setShowEmptyState] = useState<'none' | 'icon' | 'emoji'>('none');
+  const [showEmptyState, setShowEmptyState] = useState<
+    "none" | "icon" | "emoji"
+  >("none");
 
   const handleFormSubmit = (values: any) => {
-    Alert.alert('Formulario Enviado', `Datos: ${JSON.stringify(values, null, 2)}`);
+    Alert.alert(
+      "Formulario Enviado",
+      `Datos: ${JSON.stringify(values, null, 2)}`
+    );
   };
 
   const handleHeaderBack = () => {
-    Alert.alert('Navegación', 'Botón atrás presionado');
+    Alert.alert("Navegación", "Botón atrás presionado");
   };
 
   const handleHeaderAction = () => {
-    Alert.alert('Acción', 'Acción del header ejecutada');
+    Alert.alert("Acción", "Acción del header ejecutada");
   };
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.BACKGROUND }}>
         <StatusBar style="dark" />
-        
+
         {/* Header Component */}
         <Header
           title="🎄 Componentes UI"
@@ -51,38 +58,49 @@ export default function App() {
           testID="app-header"
         />
 
-        <ScrollView 
+        <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={{ padding: spacing[4] }}
         >
           {/* Buttons Section */}
           <Card style={{ marginBottom: spacing[6] }}>
-            <Text style={[typography.h3, { color: colors.TEXT_PRIMARY, marginBottom: spacing[4] }]}>
+            <Text
+              style={[
+                typography.h3,
+                { color: colors.TEXT_PRIMARY, marginBottom: spacing[4] },
+              ]}
+            >
               Botones
             </Text>
             <View style={{ gap: spacing[3] }}>
               <Button
                 label="Primary Button"
                 variant="primary"
-                onPress={() => Alert.alert('Primary', 'Botón primary presionado')}
+                onPress={() =>
+                  Alert.alert("Primary", "Botón primary presionado")
+                }
               />
               <Button
                 label="Secondary Button"
                 variant="secondary"
                 iconLeft="gift"
-                onPress={() => Alert.alert('Secondary', 'Botón secondary presionado')}
+                onPress={() =>
+                  Alert.alert("Secondary", "Botón secondary presionado")
+                }
               />
               <Button
                 label="Outline Button"
                 variant="outline"
                 size="sm"
-                onPress={() => Alert.alert('Outline', 'Botón outline presionado')}
+                onPress={() =>
+                  Alert.alert("Outline", "Botón outline presionado")
+                }
               />
               <Button
                 label="Danger Button"
                 variant="danger"
                 size="lg"
-                onPress={() => Alert.alert('Danger', 'Botón danger presionado')}
+                onPress={() => Alert.alert("Danger", "Botón danger presionado")}
               />
               <Button
                 label="Loading Button"
@@ -95,15 +113,22 @@ export default function App() {
 
           {/* Avatars Section */}
           <Card style={{ marginBottom: spacing[6] }}>
-            <Text style={[typography.h3, { color: colors.TEXT_PRIMARY, marginBottom: spacing[4] }]}>
+            <Text
+              style={[
+                typography.h3,
+                { color: colors.TEXT_PRIMARY, marginBottom: spacing[4] },
+              ]}
+            >
               Avatares
             </Text>
-            <View style={{ flexDirection: 'row', gap: spacing[4], alignItems: 'center' }}>
-              <Avatar
-                fallbackText="MG"
-                size="sm"
-                testID="avatar-small"
-              />
+            <View
+              style={{
+                flexDirection: "row",
+                gap: spacing[4],
+                alignItems: "center",
+              }}
+            >
+              <Avatar fallbackText="MG" size="sm" testID="avatar-small" />
               <Avatar
                 fallbackText="JP"
                 size="md"
@@ -122,11 +147,16 @@ export default function App() {
 
           {/* Form Section */}
           <Card style={{ marginBottom: spacing[6] }}>
-            <Text style={[typography.h3, { color: colors.TEXT_PRIMARY, marginBottom: spacing[4] }]}>
+            <Text
+              style={[
+                typography.h3,
+                { color: colors.TEXT_PRIMARY, marginBottom: spacing[4] },
+              ]}
+            >
               Formulario con Validación
             </Text>
             <Formik
-              initialValues={{ name: '', email: '', password: '' }}
+              initialValues={{ name: "", email: "", password: "" }}
               validationSchema={validationSchema}
               onSubmit={handleFormSubmit}
             >
@@ -164,27 +194,34 @@ export default function App() {
 
           {/* Empty State Section */}
           <Card style={{ marginBottom: spacing[6] }}>
-            <Text style={[typography.h3, { color: colors.TEXT_PRIMARY, marginBottom: spacing[4] }]}>
+            <Text
+              style={[
+                typography.h3,
+                { color: colors.TEXT_PRIMARY, marginBottom: spacing[4] },
+              ]}
+            >
               Estados Vacíos
             </Text>
-            <View style={{ flexDirection: 'row', gap: spacing[3] }}>
+            <View style={{ flexDirection: "row", gap: spacing[3] }}>
               <Button
-                label={showEmptyState !== 'none' ? "Ocultar" : "Mostrar"}
+                label={showEmptyState !== "none" ? "Ocultar" : "Mostrar"}
                 variant="outline"
                 size="sm"
-                onPress={() => setShowEmptyState(showEmptyState === 'none' ? 'icon' : 'none')}
+                onPress={() =>
+                  setShowEmptyState(showEmptyState === "none" ? "icon" : "none")
+                }
               />
               <Button
                 label="Con Emoji"
                 variant="secondary"
                 size="sm"
-                onPress={() => setShowEmptyState('emoji')}
+                onPress={() => setShowEmptyState("emoji")}
               />
             </View>
           </Card>
 
           {/* Conditional Empty State */}
-          {showEmptyState === 'icon' && (
+          {showEmptyState === "icon" && (
             <Card style={{ marginBottom: spacing[6] }}>
               <EmptyState
                 icon="gift"
@@ -193,14 +230,15 @@ export default function App() {
                 actionButton={{
                   label: "Agregar Regalo",
                   variant: "primary",
-                  onPress: () => Alert.alert('Acción', 'Agregar regalo presionado'),
+                  onPress: () =>
+                    Alert.alert("Acción", "Agregar regalo presionado"),
                 }}
                 testID="empty-gifts"
               />
             </Card>
           )}
 
-          {showEmptyState === 'emoji' && (
+          {showEmptyState === "emoji" && (
             <Card style={{ marginBottom: spacing[6] }}>
               <EmptyState
                 emoji="🎅"
@@ -213,23 +251,42 @@ export default function App() {
 
           {/* Design System Preview */}
           <Card>
-            <Text style={[typography.h3, { color: colors.TEXT_PRIMARY, marginBottom: spacing[4] }]}>
+            <Text
+              style={[
+                typography.h3,
+                { color: colors.TEXT_PRIMARY, marginBottom: spacing[4] },
+              ]}
+            >
               Design System
             </Text>
-            <Text style={[typography.body, { color: colors.TEXT_SECONDARY, marginBottom: spacing[3] }]}>
+            <Text
+              style={[
+                typography.body,
+                { color: colors.TEXT_SECONDARY, marginBottom: spacing[3] },
+              ]}
+            >
               🎨 Colores navideños: Rojo, Verde, Dorado
             </Text>
-            <Text style={[typography.body, { color: colors.TEXT_SECONDARY, marginBottom: spacing[3] }]}>
+            <Text
+              style={[
+                typography.body,
+                { color: colors.TEXT_SECONDARY, marginBottom: spacing[3] },
+              ]}
+            >
               📝 Tipografía escalable y consistente
             </Text>
-            <Text style={[typography.body, { color: colors.TEXT_SECONDARY, marginBottom: spacing[3] }]}>
+            <Text
+              style={[
+                typography.body,
+                { color: colors.TEXT_SECONDARY, marginBottom: spacing[3] },
+              ]}
+            >
               🔘 Componentes reutilizables con TypeScript
             </Text>
             <Text style={[typography.body, { color: colors.TEXT_SECONDARY }]}>
               ✅ Integración con Formik y validación Yup
             </Text>
           </Card>
-
         </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
