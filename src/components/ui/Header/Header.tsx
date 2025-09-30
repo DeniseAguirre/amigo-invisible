@@ -57,8 +57,8 @@ export const Header: React.FC<HeaderProps> = React.memo(
     const getHeaderStyles = () => ({
       backgroundColor,
       paddingTop: insets.top,
-      paddingHorizontal: spacing[4], // 16px
-      paddingBottom: spacing[3], // 12px
+      paddingHorizontal: spacing[2], // 16px
+      paddingBottom: spacing[2], // 12px
       ...(showShadow && shadows.sm),
     });
 
@@ -70,28 +70,6 @@ export const Header: React.FC<HeaderProps> = React.memo(
       minHeight: 56, // Standard header height
     });
 
-    // Get left section styles
-    const getLeftSectionStyles = () => ({
-      flexDirection: "row" as const,
-      alignItems: "center" as const,
-      flex: 1,
-    });
-
-    // Get title styles
-    const getTitleStyles = () => {
-      const textAlign = showBackButton
-        ? ("left" as const)
-        : ("center" as const);
-
-      return {
-        ...typography.titleMedium,
-        color: colors.TEXT_PRIMARY,
-        flex: 1,
-        textAlign,
-        marginLeft: showBackButton ? spacing[3] : 0, // 12px
-      };
-    };
-
     // Get icon button styles
     const getIconButtonStyles = () => ({
       width: 40,
@@ -99,12 +77,6 @@ export const Header: React.FC<HeaderProps> = React.memo(
       borderRadius: 20,
       alignItems: "center" as const,
       justifyContent: "center" as const,
-    });
-
-    // Get right section styles
-    const getRightSectionStyles = () => ({
-      width: 40, // Reserve space for consistency
-      alignItems: "flex-end" as const,
     });
 
     return (
@@ -119,9 +91,8 @@ export const Header: React.FC<HeaderProps> = React.memo(
         {/* Header Container */}
         <View style={getHeaderStyles()} testID={testID}>
           <View style={getContentStyles()}>
-            {/* Left Section */}
-            <View style={getLeftSectionStyles()}>
-              {/* Back Button */}
+            {/* Sección izquierda - Botón atrás */}
+            <View style={{ width: 40, alignItems: "flex-start" }}>
               {showBackButton && (
                 <TouchableOpacity
                   style={getIconButtonStyles()}
@@ -132,10 +103,16 @@ export const Header: React.FC<HeaderProps> = React.memo(
                   <BackIcon size={24} color={colors.TEXT_PRIMARY} />
                 </TouchableOpacity>
               )}
+            </View>
 
-              {/* Title */}
+            {/* Título siempre centrado */}
+            <View style={{ flex: 1, alignItems: "center" }}>
               <Text
-                style={getTitleStyles()}
+                style={{
+                  ...typography.titleMedium,
+                  color: colors.TEXT_PRIMARY,
+                  textAlign: "center",
+                }}
                 numberOfLines={1}
                 ellipsizeMode="tail"
                 testID={`${testID}-title`}
@@ -144,8 +121,8 @@ export const Header: React.FC<HeaderProps> = React.memo(
               </Text>
             </View>
 
-            {/* Right Section */}
-            <View style={getRightSectionStyles()}>
+            {/* Sección derecha - Acciones */}
+            <View style={{ width: 40, alignItems: "flex-end" }}>
               {RightIcon && onRightIconPress && (
                 <TouchableOpacity
                   style={getIconButtonStyles()}
