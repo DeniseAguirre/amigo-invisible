@@ -58,7 +58,7 @@ npm install -g @expo/cli
 ### 2. **Instalación**
 ```bash
 # Clonar el repositorio
-git clone <tu-repo>
+git clone https://github.com/DeniseAguirre/amigo-invisible.git
 cd amigo-invisible
 
 # Instalar dependencias
